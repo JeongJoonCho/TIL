@@ -22,7 +22,7 @@
 
 ---
 
-![2-2](C:/Users/user/Desktop/TIL/md-images/2-2.PNG)
+
 
 **버전 자체를 공유!!**
 

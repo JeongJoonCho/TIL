@@ -5,12 +5,10 @@
 ### 기본 흐름
 
 1. 작업하면 
-
 2. add하여 Staging area에 모아 
-
 3. commit으로 버전기록
 
-   ![1](md-images/untitle.png/1.PNG)
+![1](md-images/1.PNG)
 
 ---
 
