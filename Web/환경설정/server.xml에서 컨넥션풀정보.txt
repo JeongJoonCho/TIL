@@ -1,1 +1,0 @@
-<Resource auth="Container" driverClassName="com.mysql.cj.jdbc.Driver" maxIdle="4" maxTotal="8" name="jdbc/member" password="1234" type="javax.sql.DataSource" url="jdbc:mysql://localhost:3306/kdt13" username="root"/>
