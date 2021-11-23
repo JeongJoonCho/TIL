@@ -1,0 +1,99 @@
+@RequestMapping(value="/tts", method=RequestMethod.POST)
+		@ResponseBody
+		public String tts(@RequestParam("uploadFile") MultipartFile file,
+									@RequestParam("language") String language) {
+			String result = "";
+			
+			try {
+				//1. 파일 저장 경로 설정 : 실제 서비스 되는 위치 (프로젝트 외부에 저장)
+				  String uploadPath =  "c:/ai/";
+				  
+				  //2.원본 파일 이름
+				  String originalFileName = file.getOriginalFilename();  
+				  
+				  //3. 파일 생성 
+				  String filePathName = uploadPath + originalFileName;
+				  File file1 = new File(filePathName);
+				  System.out.println("3");
+				  
+				  //4. 서버로 전송
+				  file.transferTo(file1);
+				  
+				  result = mapService.clovaTextToSpeech(filePathName, language);
+				  System.out.println(result);
+				  
+			}catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			
+			return result;  //음성 일 이름 반환
+		}
+
+
+
+public String clovaTextToSpeech(String filePathName, String language) {
+		// TODO Auto-generated method stub
+		String result = null;
+		String clientId = "";
+        String clientSecret = ""; 
+        try {
+        	File file = new File(filePathName);
+        	FileReader fr = new FileReader(file);
+        	BufferedReader br1 = new BufferedReader(fr);
+        	StringBuffer sb = new StringBuffer();
+        	String temp = null;
+        	while((temp=br1.readLine())!=null) {
+        		sb.append(temp);
+        	}
+        	br1.close();
+        	fr.close();
+        	System.out.println(sb.toString());
+            String text = URLEncoder.encode(sb.toString(), "UTF-8"); 
+            String apiURL = "https://naveropenapi.apigw.ntruss.com/tts-premium/v1/tts";
+            URL url = new URL(apiURL);
+            HttpURLConnection con = (HttpURLConnection)url.openConnection();
+            con.setRequestMethod("POST");
+            con.setRequestProperty("X-NCP-APIGW-API-KEY-ID", clientId);
+            con.setRequestProperty("X-NCP-APIGW-API-KEY", clientSecret);
+            // post request
+            String postParams = "speaker="+language+"&volume=0&speed=0&pitch=0&format=mp3&text=" + text;
+            con.setDoOutput(true);
+            DataOutputStream wr = new DataOutputStream(con.getOutputStream());
+            wr.writeBytes(postParams);
+            wr.flush();
+            wr.close();
+            int responseCode = con.getResponseCode();
+            BufferedReader br= null;
+            if(responseCode==200) { 
+                InputStream is = con.getInputStream();
+                int read = 0;
+                byte[] bytes = new byte[1024];
+               
+                String tempname = Long.valueOf(new Date().getTime()).toString();
+                result = "tts_"+tempname+".mp3";
+                File f = new File("c:/ai/"+result);
+                f.createNewFile();
+                OutputStream outputStream = new FileOutputStream(f);
+                while ((read =is.read(bytes)) != -1) {
+                    outputStream.write(bytes, 0, read);
+                }
+                outputStream.flush();
+                outputStream.close();
+                is.close();
+            } else {
+                br = new BufferedReader(new InputStreamReader(con.getErrorStream()));
+                String inputLine;
+                StringBuffer response = new StringBuffer();
+                while ((inputLine = br.readLine()) != null) {
+                    response.append(inputLine);
+                }
+                br.close();
+                System.out.println(response.toString());
+                result = response.toString();
+            }
+        } catch (Exception e) {
+            System.out.println(e);
+        }
+		return result;
+	}
