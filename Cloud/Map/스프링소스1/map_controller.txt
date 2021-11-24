@@ -1,0 +1,22 @@
+@ResponseBody
+		@RequestMapping(value="/web02", method=RequestMethod.GET, produces = "application/text; charset=UTF-8")
+		public void getGeo(HttpServletRequest req, HttpServletResponse res) throws IOException {
+			req.setCharacterEncoding("utf-8");
+			String addr = req.getParameter("addr");
+			res.setContentType("text/text; charset=utf-8");
+			String result = mapService.geocode(addr);
+			//String result = mapService.reverseGeocode("127.1054065,37.3595669");
+			System.out.println("controller "+result);
+			res.getWriter().print(result);
+		}
+		
+		@ResponseBody
+		@RequestMapping(value="/web03", method=RequestMethod.GET, produces = "application/text; charset=UTF-8")
+		public void reverseGetgeo(HttpServletRequest req, HttpServletResponse res) throws IOException {
+			req.setCharacterEncoding("utf-8");
+			String coords = req.getParameter("coords");
+			res.setContentType("text/text; charset=utf-8");
+			String result = mapService.reverseGeocode(coords);
+			System.out.println("controller "+result);
+			res.getWriter().print(result);
+		}
