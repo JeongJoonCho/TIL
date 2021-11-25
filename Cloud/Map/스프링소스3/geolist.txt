@@ -1,0 +1,20 @@
+@ResponseBody
+	@RequestMapping("/geoList")
+	  public List<GeoInfoVO> listMembers () {
+	    List<GeoInfoVO> list = new ArrayList<GeoInfoVO>();
+		GeoInfoVO vo1 = new GeoInfoVO("37.4959854","127.0664091","강남");
+		GeoInfoVO vo2 = new GeoInfoVO("37.5492077","127.1464824","강동");
+		GeoInfoVO vo3 = new GeoInfoVO("37.6469954","127.0147158","강북");
+     	list.add(vo1);
+     	list.add(vo2);
+     	list.add(vo3);
+
+	    return list; 
+	  }	
+	  
+	  		<!-- JSON  --> 
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+			<version>2.5.4</version>
+		</dependency>
