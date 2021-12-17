@@ -1,0 +1,24 @@
+1. 푸티
+2. root 엔터
+3. 비번 엔터
+4. service mysql status로 접속 확인
+5.mysql -uroot
+6.alter user 'root'@'localhost' identified by 'mcsn504';
+7. create user 'mcsndev'@'%' identified by 'mcsn504';
+8.grant all privileges on *.* to 'mcsndev'@'%'; 권한 부여
+9.flush privileges; 권한 확정
+10. cd /etc/mysql/
+11.ls
+12.cd mysql.conf.d/
+:wq
+
+
+<Resource auth="Container" driverClassName="com.mysql.jdbc.Driver" maxIdle="4" maxTotal="8" name="jdbc/member" password="" type="javax.sql.DataSource" url="jdbc:mysql://118.67.133.246:3306/kdt13?useSSL=false&amp;
+CharacterEncoding=UTF-8&amp;useUnicode=true" username=""/>
+
+
+<dependency>
+    <groupId>mysql</groupId>
+    <artifactId>mysql-connector-java</artifactId>
+    <version>5.1.7</version>
+</dependency>
